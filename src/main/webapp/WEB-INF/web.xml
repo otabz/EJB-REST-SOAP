@@ -1,0 +1,12 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app id="WebApp_1480429259382">
+  <display-name>Archetype Created Web Application</display-name>
+   <!--<listener>
+	<listener-class>
+             com.mobility.MyServletContainerListener
+        </listener-class>
+   </listener>-->
+</web-app>

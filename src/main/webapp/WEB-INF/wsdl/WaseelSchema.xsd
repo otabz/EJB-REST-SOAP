@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="WSchema-ST.xsd" />
+    <xs:include schemaLocation="WSchema-CT.xsd" />
+    <xs:element name="Introduction" type="page" />
+    <xs:element name="TransactionWrapper">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CommonMessageHeader" type="MessageHeaderCT" />
+                <xs:choice>
+                    <xs:element name="ErrorResponse" type="ErrorResponseCT" maxOccurs="unbounded" />
+                    <xs:element name="EligibilitySubmissionRequest" type="EligibilitySubmissionRequestCT" />
+                    <xs:element name="EligibilitySubmissionResponse" type="EligibilitySubmissionReponseCT" />
+                    <xs:element name="ApprovalSubmissionRequest" type="ApprovalSubmissionRequestCT" />
+                    <xs:element name="ApprovalSubmissionResponse" type="ApprovalSubmissionResponseCT" />
+                    <xs:element name="ApprovalInquiryRequest" type="ApprovalInquiryRequestCT" />
+                    <xs:element name="ApprovalInquiryResponse" type="ApprovalInquiryResponseCT" />
+                    <xs:element name="ApprovalNotificationRequest" type="ApprovalNotificationRequestCT" />
+                    <xs:element name="ApprovalNotificationResponse" type="ApprovalNotificationResponseCT" />
+                    <xs:element name="ClaimSubmissionRequest" type="ClaimSubmissionRequestCT" />
+                    <xs:element name="ClaimSubmissionResponse" type="ClaimSubmissionResponseCT" />
+                    <xs:element name="ClaimInquiryRequest" type="ClaimInquiryRequestCT" />
+                    <xs:element name="ClaimInquiryResponse" type="ClaimInquiryResponseCT" />
+                    <xs:element name="PolicyNotificationRequest" type="PolicyNotificationRequestCT" />
+                    <xs:element name="PolicyNotificationResponse" type="PolicyNotificationResponseCT" />
+                    <xs:element name="PolicyInquiryRequest" type="PolicyInquiryRequestCT" />
+                    <xs:element name="PolicyInuiryResponse" type="PolicyInquiryResponseCT" />
+                    <xs:element name="ClaimNotificationRequest" type="ClaimNotificationRequestCT" />
+                    <xs:element name="ClaimNotificationResponse" type="ClaimNotificationResponseCT" />
+                    <xs:element name="AttachmentSubmissionRequest" type="AttachmentSubmissionRequestCT" />
+                    <xs:element name="AttachmentSubmissionResponse" type="AttachmentSubmissionResponseCT" />
+                    <xs:element name="MSOBRequest" type="MSOBRequestCT" />
+                    <xs:element name="MEOBRequest" type="MEOBRequestCT" />
+                    <xs:element name="MSOBResponse" type="MSOBResponseCT" />
+                    <xs:element name="MEOBResponse" type="MEOBResponseCT" />
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

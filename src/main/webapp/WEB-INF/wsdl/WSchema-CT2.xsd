@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="WSchema-ST.xsd" />
+    <xs:complexType name="AdmissionCT">
+        <xs:annotation>
+            <xs:documentation>AdmissionCT include the admission related information like admission date, admission type, and the estimated length of stay</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="admissionDate" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+            <xs:element name="admissionType" type="admissionTypeST" minOccurs="1" maxOccurs="1" />
+            <xs:element name="estimatedLengthOfStay" type="xs:duration" minOccurs="1" maxOccurs="1" />
+            <xs:element name="roomNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="bedNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Discharge" type="DischargeCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required if= inpatient claim submission and delivery claim submission
+                        Not required= otherwise
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdmissionDecisionCT">
+        <xs:sequence>
+            <xs:element name="roomType" type="roomTypeST" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The room type is specified the the insurance depending on the members explanation of benefits EOB.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="approvedLengthOfStay" type="xs:duration">
+                <xs:annotation>
+                    <xs:documentation>The admission days approved by the insurance. If admission is rejected, this value should be set to zero</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdmissionResponseCT">
+        <xs:sequence>
+            <xs:element name="Admission" type="AdmissionCT">
+                <xs:annotation>
+                    <xs:documentation>The Admission responseCT refers to the requested admission and defines the payer decision on the admission. It includes the details of the requested admission and the approval on it.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="AdmissionDecision" type="AdmissionDecisionCT" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalCriteriaCT">
+        <xs:sequence>
+            <xs:element name="memberID" type="memberIDST" />
+            <xs:element name="policyNumber" type="policyNumberST" />
+            <xs:element name="startDate" type="xs:date" />
+            <xs:element name="endDate" type="xs:date" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalLineCT">
+        <xs:sequence>
+            <xs:element name="type" type="caseTypeST" />
+            <xs:element name="statusCode" type="statusCodeST" minOccurs="1" maxOccurs="1" />
+            <xs:element name="approvalNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="patientFileNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="submissionDate" type="xs:date" minOccurs="1" maxOccurs="1" />
+            <xs:element name="approvalVersion" type="xs:string" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BenefitCT">
+        <xs:sequence>
+            <xs:element name="benefitCode" type="benefitCodeST" />
+            <xs:element name="benefitLimit" type="amountST" minOccurs="0" />
+            <xs:element name="benefitDescription" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="patientShare" type="amountST" />
+            <xs:element name="maxPatientShare" type="amountST" minOccurs="0" />
+            <xs:element name="maxConsultFee" type="amountST" minOccurs="0" />
+            <xs:element name="approvalThreshold" type="amountST" minOccurs="0" />
+<xs:element name="approvalLimit" type="approvalLimitST" />
+            <xs:element name="CEC" type="CECCT" />
+            <xs:element name="Case" type="CaseCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="SubCoverage" type="SubCoverageCT" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BroadcastListCT">
+        <xs:sequence>
+            <xs:element name="receiverCode" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="count" type="xs:integer" />
+    </xs:complexType>
+    <xs:complexType name="CaseInfoCT">
+        <xs:sequence>
+            <xs:element name="caseType" type="caseTypeST" minOccurs="1" maxOccurs="1" />
+            <xs:element name="physician" type="PhysicianCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="patient" type="PatientCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="caseDescription" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="bloodPressure" type="bloodPressureST" minOccurs="0" />
+                        <xs:element name="temperature" type="temperatureST" minOccurs="0" />
+                        <xs:element name="pulse" type="pulseST" minOccurs="0" />
+                        <xs:element name="respRate" type="respRateST" minOccurs="0" />
+                        <xs:element name="weight" type="weightST" />
+                        <xs:element name="LMP" type="xs:date" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    required if { caseType = Delivery}
+                                    Not Required if { case type = all other types}
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="IllnessCategory">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="inllnessCode" type="illnessCodeST" minOccurs="0" maxOccurs="8" />
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="illnessDuration" type="xs:duration">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Duration format is P(years)Y(months)M(days)DT(hours)H(minutes)M(seconds)S
+                                    
+                                    Valid values include PT1004199059S, PT130S, PT2M10S, P1DT2S, -P1Y, or P1Y2M3DT5H20M30.123S.
+                                    
+                                    The following values are invalid: 1Y (leading P is missing), P1S (T separator is missing), P-1Y (all parts must be positive), P1M2Y (parts order is significant and Y must precede M), or P1Y-1M (all parts must be positive).
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Diagnosis" type="DiagnosisCT" minOccurs="1" maxOccurs="unbounded" />
+                        <xs:element name="Optics" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    Required IF {case type = Optical}
+                                    Not Required IF {case type = all the other}
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="reading" minOccurs="2" maxOccurs="10">
+                                        <xs:complexType>
+                                            <xs:complexContent mixed="false">
+                                                <xs:extension base="opticalReadingST" />
+                                            </xs:complexContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Investigation" type="InvestigationCT" minOccurs="0" maxOccurs="unbounded" />
+                        <xs:element name="chiefComplaintSymptoms" type="xs:string" minOccurs="0" />
+                        <xs:element name="signicantSigns" type="xs:string" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="possibleLineOfTreatment" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element minOccurs="0" maxOccurs="1" name="otherConditions" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="radiologyReport" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CECCT">
+        <xs:all>
+            <xs:element name="Exclusions" type="xs:string" minOccurs="0" />
+            <xs:element name="Coverage" type="xs:string" minOccurs="0" />
+            <xs:element name="Comments" type="xs:string" minOccurs="0" />
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="ClaimCriteriaCT">
+        <xs:sequence>
+            <xs:element name="providerBatchID" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="payerBatchID" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="providerClaimNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="payerClaimNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimIdentifierCT">
+        <xs:sequence>
+            <xs:element name="portalTransactionID" type="xs:string" />
+            <xs:element name="providerClaimNumber" type="xs:string" />
+            <xs:element name="providerParentClaimNumber" type="xs:string" minOccurs="0" />
+            <xs:element name="providerBatchID" type="xs:string" minOccurs="0" />
+            <xs:element name="payerBatchID" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="payerClaimNumber" type="xs:string" minOccurs="0" />
+            <xs:element name="approvalNumber" type="xs:string" minOccurs="0" />
+            <xs:element name="eligibilityNumber" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimLineCT">
+        <xs:sequence>
+            <xs:element name="ClaimIdentifier" type="ClaimIdentifierCT" />
+            <xs:element name="Member" type="MemberCT" />
+            <xs:element name="submissionDate" type="xs:date" minOccurs="0" />
+            <xs:element name="Status" type="StatusCT" />
+            <xs:element name="ClaimGDPN" type="GDPNCT" />
+            <xs:element name="ClaimDecisionGDPN" type="GDPNCT" minOccurs="0" />
+            <xs:element name="ClaimPayment" type="ClaimPaymentCT" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimPaymentCT">
+        <xs:sequence>
+            <xs:element name="paymentDate" type="xs:date" />
+            <xs:element name="paymentReference" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CommentCT">
+        <xs:sequence>
+            <xs:element name="commentDate" type="xs:dateTime" />
+            <xs:element name="commentText" type="xs:string" />
+            <xs:element name="commentType" type="commentTypeST" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CoverageInfoCT">
+        <xs:sequence>
+            <xs:element name="benefit" type="BenefitCT" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DiagnosisCT">
+        <xs:sequence>
+            <xs:element name="diagnosisNumber" type="xs:long" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF {diagnosis already been submitted and provider wishes to modify of deletel}
+                        Not Required IF { diagnosis is new and provider wishes to add it }
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="diagnosisCode" type="diangosisCodeST" />
+            <xs:element name="diagnosisType" type="diagnosisTypeST" />
+            <xs:element name="diagnosisDescription" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DischargeCT">
+        <xs:sequence>
+            <xs:element name="actualLengthOfStay" type="xs:duration" />
+            <xs:element name="dischargeDate" type="xs:dateTime" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DrugUseCT">
+        <xs:sequence>
+            <xs:element name="dosage">
+                <xs:annotation>
+                    <xs:documentation>
+This dosage type is mainly related to drug dosage and per take. Example:
+The doctor prescribed and antibiotic for a patient the antibiotic is Augmentin 
+500mg the patient should take two pills a day for 7 days this is how it will be
+represented in the schema
+Service code: 12346
+Service desc: Augmentin 500m
+Dosage: 500
+dosageType=mg 
+doesTimes=2
+durationOf treatment=7
+The benefit of such specification is intended for automation of formulary and
+pharmacy drugs decision support. When implementing such feature drug safety measures,
+and contradictions as well as, interactions between drugs and over dose can be detected.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="unit" default="TAB">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="GM" />
+                                        <xs:enumeration value="MG" />
+                                        <xs:enumeration value="MCG" />
+                                        <xs:enumeration value="CC" />
+                                        <xs:enumeration value="ML" />
+                                        <xs:enumeration value="TSP" />
+                                        <xs:enumeration value="TBSP" />
+                                        <xs:enumeration value="GTT" />
+                                        <xs:enumeration value="TAB" />
+                                        <xs:enumeration value="CAP" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="doseTimes">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:integer">
+                            <xs:attribute name="qualifier" default="QD">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="QD" />
+                                        <xs:enumeration value="QH" />
+                                        <xs:enumeration value="PC" />
+                                        <xs:enumeration value="AC" />
+                                        <xs:enumeration value="PRN" />
+                                        <xs:enumeration value="QOD" />
+                                        <xs:enumeration value="STAT" />
+                                        <xs:enumeration value="QHS" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="durationOfTreatment" type="xs:duration" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EditingCT">
+        <xs:sequence>
+            <xs:element name="canFollowUp" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation>Can follow up determines if provider can make a follow up or update on the approval in question</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="canCancel" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation>Can cancel detemines of the provider is allowed to cancel the approval in question</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EndorsementCT">
+        <xs:sequence>
+            <xs:element name="endorsementDate" type="xs:date" />
+            <xs:element name="endorsementType" type="endorsementTypeST" />
+            <xs:element name="endorsmentMessage" type="xs:string" />
+            <xs:element name="endorsementNumber" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GDPNCT">
+        <xs:sequence>
+            <xs:element name="net" type="amountST" />
+            <xs:element name="patientShare" type="amountST" />
+            <xs:element name="discount" type="amountST" />
+            <xs:element name="gross" type="amountST" />
+            <xs:element name="priceCorrection" type="amountST" minOccurs="0" maxOccurs="1" />
+            <xs:element name="rejection" type="amountST" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GeneralInfoCT">
+        <xs:sequence>
+            <xs:element name="Member" type="MemberCT" />
+            <xs:element name="VisitInformation" type="visitInfoCT" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="InteractionCT">
+        <xs:sequence>
+            <xs:element name="BroadcastList" type="BroadcastListCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The list of receiver Codes to be broadcast</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="receiverCode" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>
+                        The Code of the reciever according to agreed defintion
+                        If the request is intended for multiple recepients, the receiver code=" BRDXT" must be used and the list of receivers must be identified in the BroadcastList element
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="senderCode" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>The code of the sender according to an agreed definition</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="interactionCode" type="xs:integer" default="101">
+                <xs:annotation>
+                    <xs:documentation>
+                        The interaction method or medium through which the transaction was exchanged. 
+                        
+                        101 = Waseel
+                        010= Provider (Waseele)
+                        011= Other
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="InvestigationCT">
+        <xs:sequence>
+            <xs:element name="investigationType" type="xs:string" />
+            <xs:element name="investigationCode" type="xs:string" />
+            <xs:element name="investigationDescription" type="xs:string" />
+            <xs:element name="investigationDate" type="xs:date" />
+            <xs:element name="Observation" type="ObservationCT" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="investigationComments" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="InvoiceCT">
+        <xs:sequence>
+            <xs:element name="invoiceNumber" type="xs:string" />
+            <xs:element name="invoiceDate" type="xs:date" />
+            <xs:element name="invoiceDepartment" type="xs:string" />
+            <xs:element name="InvoiceGDPN" type="GDPNCT" />
+            <xs:element name="Service" type="ServiceCT" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="InvoiceDecisionCT">
+        <xs:sequence>
+            <xs:element name="invoiceNumber" type="xs:string" />
+            <xs:element name="InvoiceGDPN" type="GDPNCT" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="InvoiceResponseCT">
+        <xs:sequence>
+            <xs:element name="InvoiceDecision" type="InvoiceDecisionCT" />
+            <xs:element name="ServiceResponse" type="ServiceResponseCT" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MemberInfoCT">
+        <xs:sequence>
+            <xs:element name="memberID" type="memberIDST" />
+            <xs:element name="policyNumber" type="policyNumberST" />
+            <xs:element name="policyType" type="policyTypeST" />
+            <xs:element name="policyHolderName" type="xs:string" />
+            <xs:element name="memberType" type="memberTypeST" />
+            <xs:element name="memberClass" type="memberClassST" />
+            <xs:element name="fullName" type="xs:string" />
+            <xs:element name="DOB" type="xs:date" />
+            <xs:element name="Gender" type="genderST" />
+            <xs:element name="maritalStatus" type="maritalStatusST" />
+            <xs:element name="startDate" type="xs:date" />
+            <xs:element name="endDate" type="xs:date" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MemberCT">
+        <xs:sequence>
+            <xs:element name="memberID" type="memberIDST" />
+            <xs:element name="policyNumber" type="policyNumberST" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ObservationCT">
+        <xs:sequence>
+            <xs:element name="observationCode" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="observationDescription" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="observationValue" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="observationUnit" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="observationComment" type="xs:string" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PatientCT">
+        <xs:sequence>
+            <xs:element name="patientName" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="age">
+                <xs:annotation>
+                    <xs:documentation>
+                        Duration format is P(years)Y(months)M(days)DT(hours)H(minutes)M(seconds)S
+                        
+                        Valid values include PT1004199059S, PT130S, PT2M10S, P1DT2S, -P1Y, or P1Y2M3DT5H20M30.123S.
+                        
+                        The following values are invalid: 1Y (leading P is missing), P1S (T separator is missing), P-1Y (all parts must be positive), P1M2Y (parts order is significant and Y must precede M), or P1Y-1M (all parts must be positive).
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:duration" />
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="gender" type="genderST" />
+            <xs:element name="nationality" type="nationalityST" />
+            <xs:element name="patientFileNumber" type="xs:string" />
+            <xs:element name="contactNumber" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PhysicianCT">
+        <xs:sequence>
+            <xs:element name="physicianName" type="xs:string" />
+            <xs:element name="physicianID" type="xs:string" />
+            <xs:element name="physicianCategory" type="physicianCategoryST" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyClassCT">
+        <xs:sequence>
+            <xs:element name="classCode" type="memberClassST" />
+            <xs:element name="classLimit" type="amountST" />
+            <xs:element name="Benefit" type="BenefitCT" maxOccurs="unbounded" />
+            <xs:element name="CEC" type="CECCT" />
+            <xs:element name="roomType" type="roomTypeST" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyCT">
+        <xs:sequence>
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="GenaralInfo" type="PolicyGenInfoCT" />
+            <xs:element name="PolicyClass" type="PolicyClassCT" maxOccurs="unbounded" />
+            <xs:element name="CEC" type="CECCT" />
+            <xs:element name="Endorsements">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Endorsement" type="EndorsementCT" minOccurs="0" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="additionalInfo" type="additionalInfoST" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyGenInfoCT">
+        <xs:sequence>
+            <xs:element name="policyNumber" type="policyNumberST" />
+            <xs:element name="PolicyHolderName" type="xs:string" />
+            <xs:element name="PolicyType" type="policyTypeST" />
+            <xs:element name="issueDate" type="xs:date" />
+            <xs:element name="startDate" type="xs:date" />
+            <xs:element name="endDate" type="xs:date" />
+            <xs:element name="lastUpdate" type="xs:date" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyInquiryCriteriaCT">
+        <xs:sequence>
+            <xs:element name="startDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>
+                        Start of the date range of the last update search criteria
+                        Example:
+                        startDate = 1/1/2011 end date 1/2/2011
+                        Summary will return all the policies which were last updated between 1/1/2001 and 1/2/2011
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="endDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>
+                        End of the date range of the last update search criteria
+                        Example:
+                        startDate = 1/1/2011 end date 1/2/2011
+                        Summary will return all the policies which were last updated between 1/1/2001 and 1/2/2011
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyLineCT">
+        <xs:complexContent mixed="false">
+            <xs:extension base="PolicyGenInfoCT" />
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ServiceCT">
+        <xs:sequence>
+            <xs:element name="serviceNumber" type="xs:long" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF {service already been submitted and provider wishes to modify of deletel}
+                        Not Required IF { service is new and provider wishes to add it }
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="serviceDate" type="xs:date" minOccurs="1" maxOccurs="1" />
+            <xs:element name="serviceType" type="serviceTypeST" minOccurs="0" maxOccurs="1" />
+            <xs:element name="serviceCode" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="serviceDescription" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="serviceComment" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="toothNumber" type="toothNumberST" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF caseType = DENTAL
+                        NotRequired otherwise
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="requestedQuantity" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+            <xs:element name="unitPrice" type="amountST" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ServiceGDPN" type="GDPNCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="DrugUse" type="DrugUseCT" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceResponseCT">
+        <xs:sequence>
+            <xs:element name="Service" type="ServiceCT" />
+            <xs:element name="ServiceDecision" type="ServiceDecisionCT" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ServiceDecisionCT">
+        <xs:sequence>
+            <xs:element name="serviceNumber" type="xs:long" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF {service already been submitted and provider wishes to modify of deletel}
+                        Not Required IF { service is new and provider wishes to add it }
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="approvedQuantity" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+            <xs:element name="serviceDenialCode" type="denialCodeST" minOccurs="0" maxOccurs="1" />
+            <xs:element name="decisionComment" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="unitPrice" type="amountST" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ServiceGDPN" type="GDPNCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="StatusCT">
+        <xs:sequence>
+            <xs:element name="statusCode" type="statusCodeST" />
+            <xs:element name="denialCode" type="denialCodeST" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        the denial code is a standard code for rejection of denial reasons. 
+                        it is required if= the the status code is REJECTED, INVALID, INELIGIBLE
+                        it is not reqiured if = the status code is PENDING, APPROVED, LIMIT APPROVED, PARTIALLY APPROVED, VALID, ELIGIBLE
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="statusDescription" type="xs:string" minOccurs="0" />
+            <xs:element name="referenceNumber" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        The reference Number is the reference number assigned by the respondant.
+                        
+                        Required if= 
+                        transactionType = ApprovalSubmission, EligibilitySubmission, ApprovalInquiry, ClaimSubmission, ApprovalNotification
+                        AND statusCode= APPROVED, PARTIALLY APPROVED, LIMIT APPROVED, REJECTED, PENDING
+                        
+                        Not Required otherwise
+                        if statusCode = INVALID
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TransactionCT">
+        <xs:sequence>
+            <xs:element name="type" type="transactionTypeST" />
+            <xs:element name="subType" type="transactionSubTypeST" />
+            <xs:element name="transactionID" type="xs:long" minOccurs="0" maxOccurs="1" />
+            <xs:element name="clientTransactionID" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="direction" type="transactionDirectionST" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="UserCT">
+        <xs:sequence>
+            <xs:element name="login" type="xs:string" />
+            <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="fullName" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ValidityEffectCT">
+        <xs:sequence>
+            <xs:element name="effectiveDate" type="xs:date" />
+            <xs:element name="expiryDate" type="xs:date" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="visitInfoCT">
+        <xs:sequence>
+            <xs:element name="visitDate" type="xs:dateTime" />
+            <xs:element name="departmentCode" type="departmentCodeST" />
+            <xs:element name="visitType" type="visitTypeST" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AttachmentIdentifierCT">
+        <xs:sequence>
+            <xs:element name="attachmentUrl" type="xs:anyURI" />
+            <xs:element name="attachmentID" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MSOBRequestCT">
+        <xs:sequence>
+            <xs:element name="batchID" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>batchID will be generated by Waseel-e and will be the identifying ID for the batch</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="totalClaimCount" type="xs:integer" minOccurs="1" maxOccurs="1" />
+            <xs:element name="totalClaimedAmount" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+            <xs:element name="batchReference" type="xs:string" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>batchReference is Provider specific batch identifier which helps provider in identifying the batch</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sendDate" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+            <xs:element name="NotAcceptedClaimsCount" type="xs:integer" minOccurs="1" maxOccurs="1" />
+            <xs:element name="NotAcceptedClaimsList" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="NotAcceptedClaimsAmount" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+            <xs:element name="AcceptedClaimsCount" type="xs:integer" minOccurs="1" maxOccurs="1" />
+            <xs:element name="AcceptedClaimsAmount" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MEOBRequestCT">
+        <xs:sequence>
+            <xs:element name="batchID" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="SubmittedClaimsCount" type="xs:integer" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MSOBResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="MSOBRequestCT" />
+            <xs:element name="Status" type="StatusCT" />
+            <xs:element name="additionalInfo" type="additionalInfoST" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MEOBResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="MEOBRequestCT" />
+            <xs:element name="Status" type="StatusCT" />
+            <xs:element name="additionalInfo" type="additionalInfoST" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CaseCT">
+        <xs:sequence>
+            <xs:element name="CaseQualifier" type="caseQualifierST" />
+            <xs:element name="patientShare" type="amountST" />
+            <xs:element name="maxPatientShare" type="amountST" minOccurs="0" />
+            <xs:element name="maxConsultFee" type="amountST" minOccurs="0" />
+            <xs:element name="approvalThreshold" type="amountST" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SubCoverageCT">
+        <xs:sequence>
+            <xs:element name="subCoverageCode" type="xs:string" />
+            <xs:element name="subCoverageDescription" type="xs:string" />
+            <xs:element name="subCoverageLimit" type="amountST" />
+            <xs:element name="subCoverageApprovalThreshold" type="amountST" />
+        </xs:sequence>
+    </xs:complexType>
+  <xs:complexType name="AttachmentRequestCT">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="fileName" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="fileType" type="fileTypeST" />
+      <xs:element minOccurs="1" maxOccurs="1" name="attachmentFile" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="1" name="userComment" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AttachmentResponseCT">
+    <xs:sequence>
+      <xs:element name="attachmentReferenceID" type="xs:string" />
+      <xs:element name="attachmentURL" type="xs:anyURI" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

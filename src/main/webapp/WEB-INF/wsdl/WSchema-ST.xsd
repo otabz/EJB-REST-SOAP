@@ -1,0 +1,1559 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="additionalInfoST">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="admissionTypeST">
+        <xs:annotation>
+            <xs:documentation>admission type for inpatient approvals and claims</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ELECTIVE" />
+            <xs:enumeration value="EMERGENCY" />
+            <xs:enumeration value="REFERRAL" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="amountST">
+        <xs:annotation>
+            <xs:documentation>the amount simple type is used wherever there is a monatry representation. it is of decimal type and has an attribute for the currency.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="value" type="amountValueST" />
+        </xs:sequence>
+        <xs:attribute name="type" type="amountTypeST" />
+    </xs:complexType>
+    <xs:simpleType name="amountValueST">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="999999999" />
+            <xs:totalDigits value="9" />
+            <xs:fractionDigits value="2" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="amountTypeST">
+        <xs:annotation>
+            <xs:documentation>
+                Code  	Currency  
+                AED	United Arab Emirates dirham
+                AFN	Afghani
+                ALL	Lek
+                AMD	Armenian Dram
+                ANG	Netherlands Antillian Guilder
+                AOA	Kwanza
+                ARS	Argentine Peso
+                AUD	Australian Dollar
+                AWG	Aruban Guilder
+                AZN	Azerbaijanian Manat
+                BAM	Convertible Marks
+                BBD	Barbados Dollar
+                BDT	Bangladeshi Taka
+                BGN	Bulgarian Lev
+                BHD	Bahraini Dinar
+                BIF	Burundian Franc
+                BMD	Bermudian Dollar (customarily known as Bermuda Dollar)
+                BND	Brunei Dollar
+                BOB	Boliviano
+                BOV	Bolivian Mvdol (Funds code)
+                BRL	Brazilian Real
+                BSD	Bahamian Dollar
+                BTN	Ngultrum
+                BWP	Pula
+                BYR	Belarussian Ruble
+                BZD	Belize Dollar
+                CAD	Canadian Dollar
+                CDF	Franc Congolais
+                CHE	WIR Euro (complementary currency)
+                CHF	Swiss Franc
+                CHW	WIR Franc (complementary currency)
+                CLF	Unidades de formento (Funds code)
+                CLP	Chilean Peso
+                CNY	Yuan Renminbi
+                COP	Colombian Peso
+                COU	Unidad de Valor Real
+                CRC	Costa Rican Colon
+                CUP	Cuban Peso
+                CVE	Cape Verde Escudo
+                CYP	Cyprus Pound
+                CZK	Czech Koruna
+                DJF	Djibouti Franc
+                DKK	Danish Krone
+                DOP	Dominican Peso
+                DZD	Algerian Dinar
+                EEK	Kroon
+                EGP	Egyptian Pound
+                ERN	Nakfa
+                ETB	Ethiopian Birr
+                EUR	Euro
+                FJD	Fiji Dollar
+                FKP	Falkland Islands Pound
+                GBP	Pound Sterling
+                GEL	Lari
+                GHS	Cedi
+                GIP	Gibraltar pound
+                GMD	Dalasi
+                GNF	Guinea Franc
+                GTQ	Quetzal
+                GYD	Guyana Dollar
+                HKD	Hong Kong Dollar
+                HNL	Lempira
+                HRK	Croatian Kuna
+                HTG	Haiti Gourde
+                HUF	Forint
+                IDR	Rupiah
+                ILS	New Israeli Shekel
+                INR	Indian Rupee
+                IQD	Iraqi Dinar
+                IRR	Iranian Rial
+                ISK	Iceland Krona
+                JMD	Jamaican Dollar
+                JOD	Jordanian Dinar
+                JPY	Japanese yen
+                KES	Kenyan Shilling
+                KGS	Som
+                KHR	Riel
+                KMF	Comoro Franc
+                KPW	North Korean Won
+                KRW	South Korean Won
+                KWD	Kuwaiti Dinar
+                KYD	Cayman Islands Dollar
+                KZT	Tenge
+                LAK	Kip
+                LBP	Lebanese Pound
+                LKR	Sri Lanka Rupee
+                LRD	Liberian Dollar
+                LSL	Loti
+                LTL	Lithuanian Litas
+                LVL	Latvian Lats
+                LYD	Libyan Dinar
+                MAD	Moroccan Dirham
+                MDL	Moldovan Leu
+                MGA	Malagasy Ariary
+                MKD	Denar
+                MMK	Kyat
+                MNT	Tugrik
+                MOP	Pataca
+                MRO	Ouguiya
+                MTL	Maltese Lira
+                MUR	Mauritius Rupee
+                MVR	Rufiyaa
+                MWK	Kwacha
+                MXN	Mexican Peso
+                MXV	Mexican Unidad de Inversion (UDI) (Funds code)
+                MYR	Malaysian Ringgit
+                MZN	Metical
+                NAD	Namibian Dollar
+                NGN	Naira
+                NIO	Cordoba Oro
+                NOK	Norwegian Krone
+                NPR	Nepalese Rupee
+                NZD	New Zealand Dollar
+                OMR	Rial Omani
+                PAB	Balboa
+                PEN	Nuevo Sol
+                PGK	Kina
+                PHP	Philippine Peso
+                PKR	Pakistan Rupee
+                PLN	Zloty
+                PYG	Guarani
+                QAR	Qatari Rial
+                RON	Romanian New Leu
+                RSD	Serbian Dinar
+                RUB	Russian Ruble
+                RWF	Rwanda Franc
+                SAR	Saudi Riyal
+                SBD	Solomon Islands Dollar
+                SCR	Seychelles Rupee
+                SDG	Sudanese Pound
+                SEK	Swedish Krona
+                SGD	Singapore Dollar
+                SHP	Saint Helena Pound
+                SKK	Slovak Koruna
+                SLL	Leone
+                SOS	Somali Shilling
+                SRD	Surinam Dollar
+                STD	Dobra
+                SYP	Syrian Pound
+                SZL	Lilangeni
+                THB	Baht
+                TJS	Somoni
+                TMM	Manat
+                TND	Tunisian Dinar
+                TOP	Pa'anga
+                TRY	New Turkish Lira
+                TTD	Trinidad and Tobago Dollar
+                TWD	New Taiwan Dollar
+                TZS	Tanzanian Shilling
+                UAH	Hryvnia
+                UGX	Uganda Shilling
+                USD	US Dollar
+                USN	
+                USS	
+                UYU	Peso Uruguayo
+                UZS	Uzbekistan Som
+                VEB	Venezuelan bolívar
+                VND	Vietnamese đồng
+                VUV	Vatu
+                WST	Samoan Tala
+                XAF	CFA Franc BEAC
+                XAG	Silver (one Troy ounce)
+                XAU	Gold (one Troy ounce)
+                XBA	European Composite Unit (EURCO) (Bonds market unit)
+                XBB	European Monetary Unit (E.M.U.-6) (Bonds market unit)
+                XBC	European Unit of Account 9 (E.U.A.-9) (Bonds market unit)
+                XBD	European Unit of Account 17 (E.U.A.-17) (Bonds market unit)
+                XCD	East Caribbean Dollar
+                XDR	Special Drawing Rights
+                XFO	Gold franc (special settlement currency)
+                XFU	UIC franc (special settlement currency)
+                XOF	CFA Franc BCEAO
+                XPD	Palladium (one Troy ounce)
+                XPF	CFP franc
+                XPT	Platinum (one Troy ounce)
+                XTS	Code reserved for testing purposes
+                XXX	No currency
+                YER	Yemeni Rial
+                ZAR	South African Rand
+                ZMK	Kwacha
+                ZWD	Zimbabwe Dollar
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PERCENT" />
+            <xs:enumeration value="AED" />
+            <xs:enumeration value="AFN" />
+            <xs:enumeration value="ALL" />
+            <xs:enumeration value="AMD" />
+            <xs:enumeration value="ANG" />
+            <xs:enumeration value="AOA" />
+            <xs:enumeration value="ARS" />
+            <xs:enumeration value="AUD" />
+            <xs:enumeration value="AWG" />
+            <xs:enumeration value="AZN" />
+            <xs:enumeration value="BAM" />
+            <xs:enumeration value="BBD" />
+            <xs:enumeration value="BDT" />
+            <xs:enumeration value="BGN" />
+            <xs:enumeration value="BHD" />
+            <xs:enumeration value="BIF" />
+            <xs:enumeration value="BMD" />
+            <xs:enumeration value="BND" />
+            <xs:enumeration value="BOB" />
+            <xs:enumeration value="BOV" />
+            <xs:enumeration value="BRL" />
+            <xs:enumeration value="BSD" />
+            <xs:enumeration value="BTN" />
+            <xs:enumeration value="BWP" />
+            <xs:enumeration value="BYR" />
+            <xs:enumeration value="BZD" />
+            <xs:enumeration value="CAD" />
+            <xs:enumeration value="CDF" />
+            <xs:enumeration value="CHE" />
+            <xs:enumeration value="CHF" />
+            <xs:enumeration value="CHW" />
+            <xs:enumeration value="CLF" />
+            <xs:enumeration value="CLP" />
+            <xs:enumeration value="CNY" />
+            <xs:enumeration value="COP" />
+            <xs:enumeration value="COU" />
+            <xs:enumeration value="CRC" />
+            <xs:enumeration value="CUP" />
+            <xs:enumeration value="CVE" />
+            <xs:enumeration value="CYP" />
+            <xs:enumeration value="CZK" />
+            <xs:enumeration value="DJF" />
+            <xs:enumeration value="DKK" />
+            <xs:enumeration value="DOP" />
+            <xs:enumeration value="DZD" />
+            <xs:enumeration value="EEK" />
+            <xs:enumeration value="EGP" />
+            <xs:enumeration value="ERN" />
+            <xs:enumeration value="ETB" />
+            <xs:enumeration value="EUR" />
+            <xs:enumeration value="FJD" />
+            <xs:enumeration value="FKP" />
+            <xs:enumeration value="GBP" />
+            <xs:enumeration value="GEL" />
+            <xs:enumeration value="GHS" />
+            <xs:enumeration value="GIP" />
+            <xs:enumeration value="GMD" />
+            <xs:enumeration value="GNF" />
+            <xs:enumeration value="GTQ" />
+            <xs:enumeration value="GYD" />
+            <xs:enumeration value="HKD" />
+            <xs:enumeration value="HNL" />
+            <xs:enumeration value="HRK" />
+            <xs:enumeration value="HTG" />
+            <xs:enumeration value="HUF" />
+            <xs:enumeration value="IDR" />
+            <xs:enumeration value="ILS" />
+            <xs:enumeration value="INR" />
+            <xs:enumeration value="IQD" />
+            <xs:enumeration value="IRR" />
+            <xs:enumeration value="ISK" />
+            <xs:enumeration value="JMD" />
+            <xs:enumeration value="JOD" />
+            <xs:enumeration value="JPY" />
+            <xs:enumeration value="KES" />
+            <xs:enumeration value="KGS" />
+            <xs:enumeration value="KHR" />
+            <xs:enumeration value="KMF" />
+            <xs:enumeration value="KPW" />
+            <xs:enumeration value="KRW" />
+            <xs:enumeration value="KWD" />
+            <xs:enumeration value="KYD" />
+            <xs:enumeration value="KZT" />
+            <xs:enumeration value="LAK" />
+            <xs:enumeration value="LBP" />
+            <xs:enumeration value="LKR" />
+            <xs:enumeration value="LRD" />
+            <xs:enumeration value="LSL" />
+            <xs:enumeration value="LTL" />
+            <xs:enumeration value="LVL" />
+            <xs:enumeration value="LYD" />
+            <xs:enumeration value="MAD" />
+            <xs:enumeration value="MDL" />
+            <xs:enumeration value="MGA" />
+            <xs:enumeration value="MKD" />
+            <xs:enumeration value="MMK" />
+            <xs:enumeration value="MNT" />
+            <xs:enumeration value="MOP" />
+            <xs:enumeration value="MRO" />
+            <xs:enumeration value="MTL" />
+            <xs:enumeration value="MUR" />
+            <xs:enumeration value="MVR" />
+            <xs:enumeration value="MWK" />
+            <xs:enumeration value="MXN" />
+            <xs:enumeration value="MXV" />
+            <xs:enumeration value="MYR" />
+            <xs:enumeration value="MZN" />
+            <xs:enumeration value="NAD" />
+            <xs:enumeration value="NGN" />
+            <xs:enumeration value="NIO" />
+            <xs:enumeration value="NOK" />
+            <xs:enumeration value="NPR" />
+            <xs:enumeration value="NZD" />
+            <xs:enumeration value="OMR" />
+            <xs:enumeration value="PAB" />
+            <xs:enumeration value="PEN" />
+            <xs:enumeration value="PGK" />
+            <xs:enumeration value="PHP" />
+            <xs:enumeration value="PKR" />
+            <xs:enumeration value="PLN" />
+            <xs:enumeration value="PYG" />
+            <xs:enumeration value="QAR" />
+            <xs:enumeration value="RON" />
+            <xs:enumeration value="RSD" />
+            <xs:enumeration value="RUB" />
+            <xs:enumeration value="RWF" />
+            <xs:enumeration value="SAR" />
+            <xs:enumeration value="SBD" />
+            <xs:enumeration value="SCR" />
+            <xs:enumeration value="SDG" />
+            <xs:enumeration value="SEK" />
+            <xs:enumeration value="SGD" />
+            <xs:enumeration value="SHP" />
+            <xs:enumeration value="SKK" />
+            <xs:enumeration value="SLL" />
+            <xs:enumeration value="SOS" />
+            <xs:enumeration value="SRD" />
+            <xs:enumeration value="STD" />
+            <xs:enumeration value="SYP" />
+            <xs:enumeration value="SZL" />
+            <xs:enumeration value="THB" />
+            <xs:enumeration value="TJS" />
+            <xs:enumeration value="TMM" />
+            <xs:enumeration value="TND" />
+            <xs:enumeration value="TOP" />
+            <xs:enumeration value="TRY" />
+            <xs:enumeration value="TTD" />
+            <xs:enumeration value="TWD" />
+            <xs:enumeration value="TZS" />
+            <xs:enumeration value="UAH" />
+            <xs:enumeration value="UGX" />
+            <xs:enumeration value="USD" />
+            <xs:enumeration value="USN" />
+            <xs:enumeration value="USS" />
+            <xs:enumeration value="UYU" />
+            <xs:enumeration value="UZS" />
+            <xs:enumeration value="VEB" />
+            <xs:enumeration value="VND" />
+            <xs:enumeration value="VUV" />
+            <xs:enumeration value="WST" />
+            <xs:enumeration value="XAF" />
+            <xs:enumeration value="XAG" />
+            <xs:enumeration value="XAU" />
+            <xs:enumeration value="XBA" />
+            <xs:enumeration value="XBB" />
+            <xs:enumeration value="XBC" />
+            <xs:enumeration value="XBD" />
+            <xs:enumeration value="XCD" />
+            <xs:enumeration value="XDR" />
+            <xs:enumeration value="XFO" />
+            <xs:enumeration value="XFU" />
+            <xs:enumeration value="XOF" />
+            <xs:enumeration value="XPD" />
+            <xs:enumeration value="XPF" />
+            <xs:enumeration value="XPT" />
+            <xs:enumeration value="XTS" />
+            <xs:enumeration value="XXX" />
+            <xs:enumeration value="YER" />
+            <xs:enumeration value="ZAR" />
+            <xs:enumeration value="ZMK" />
+            <xs:enumeration value="ZWD" />
+        </xs:restriction>
+    </xs:simpleType>
+<xs:simpleType name="approvalLimitST">
+    <xs:restriction base="xs:boolean" />
+  </xs:simpleType>
+    <xs:simpleType name="benefitCodeST">
+        <xs:annotation>
+            <xs:documentation>The code of the benefit that the eligibility is inquirying about</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DENTAL" />
+            <xs:enumeration value="MATERNITY" />
+            <xs:enumeration value="OUTPATIENT" />
+            <xs:enumeration value="ALLERGIES" />
+            <xs:enumeration value="INPATIENT" />
+            <xs:enumeration value="OPTICAL" />
+            <xs:enumeration value="PREEXISTING" />
+            <xs:enumeration value="CHRONIC" />
+            <xs:enumeration value="REPATRIATION" />
+            <xs:enumeration value="OUTPATIENT" />
+            <xs:enumeration value="PSYCHIATRY" />
+            <xs:enumeration value="CIRCUMCISION" />
+            <xs:enumeration value="TERRORISM" />
+            <xs:enumeration value="PREVENTIVE" />
+            <xs:enumeration value="AMBULANCE" />
+            <xs:enumeration value="DIALYSIS" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bloodPressureST">
+        <xs:annotation>
+            <xs:documentation>Blood pressure eg."120/80"</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="/d{2,3}//d{2,3}" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="caseQualifierST">
+        <xs:annotation>
+            <xs:documentation>
+                             
+                Possible values are:
+
+                INPATIENT, OUTPATIENT
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INPATIENT" />
+            <xs:enumeration value="OUTPATIENT" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="caseTypeST">
+        <xs:annotation>
+            <xs:documentation>
+                The type of case or approval the request includes
+                
+                Possible values are:
+                INPATIENT, OUTPATIENT, DENTAL, DELIVERY, OPTICAL, PHARMACY
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INPATIENT" />
+            <xs:enumeration value="OUTPATIENT" />
+            <xs:enumeration value="DENTAL" />
+            <xs:enumeration value="DELIVERY" />
+            <xs:enumeration value="OPTICAL" />
+            <xs:enumeration value="PHARMACY" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="commentTypeST">
+        <xs:annotation>
+            <xs:documentation>the comment type identifies the type of comment, who generated the relevnet  comment</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PAYER" />
+            <xs:enumeration value="PROVIDER" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="denialCodeST">
+        <xs:annotation>
+            <xs:documentation>
+                a standarized way to represent rejection reason. each rejection reason will have a denial code
+                
+                Note: denial code are to be defined by insurance
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="departmentCodeST">
+        <xs:annotation>
+            <xs:documentation>
+                The department or specialty which the memeber requests being exmined by:
+                
+                1	Allergy/Imunology
+                2	Cardiology
+                3	Cardiothoracic Surgery
+                4	Dental
+                5	DermaVen
+                6	Endocrinology
+                7	ENT
+                8	Family Practice
+                9	Gastroenterology
+                10	General Practice
+                11	General Surgery
+                12	Gerontology
+                13	Gynecology
+                14	Hematology
+                15	Hepatology
+                16	Infectious Diseases
+                17	Internal Medicine
+                18	Neonatal-Perinatal Medicine
+                19	Nephrology
+                20	Neurology
+                21	Neuro-Surgery
+                22	Nuclear Medicine
+                23	Obstetrics
+                24	Oncology
+                25	Opthalmic
+                26	Oral/Maxillofacial Surgery
+                27	Orthopedic
+                28	Paediatrics
+                29	Pediatric Surgery
+                30	Pulmonology
+                31	Urology
+                32	Vascular Surgery
+                33  Psychiatry
+                34  Plastic Surgery
+                35  Rheumatology
+                50  Optical
+                51	Outpatient
+                52	Inpatient
+                53	Preventive Care
+                54  Maternity
+                55  Artificial Limbs
+                56  Sugar Measuring Device
+                57  Steam Device
+                58  Non electronic wheel chair
+                59  Pre-School Check up
+                60  Pre-Marital Check up
+                61  Industrial Check up
+                62  Pre-Employment Check up
+                63  Iqama Issuance and  Renewal Check up
+                64  Business Trip Check up
+                65  General Medical Check up
+                66  Hearing Aids
+                67  Dialysis
+                68	Pharmacy
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1" />
+            <xs:enumeration value="2" />
+            <xs:enumeration value="3" />
+            <xs:enumeration value="4" />
+            <xs:enumeration value="5" />
+            <xs:enumeration value="6" />
+            <xs:enumeration value="7" />
+            <xs:enumeration value="8" />
+            <xs:enumeration value="9" />
+            <xs:enumeration value="10" />
+            <xs:enumeration value="11" />
+            <xs:enumeration value="12" />
+            <xs:enumeration value="13" />
+            <xs:enumeration value="14" />
+            <xs:enumeration value="15" />
+            <xs:enumeration value="16" />
+            <xs:enumeration value="17" />
+            <xs:enumeration value="18" />
+            <xs:enumeration value="19" />
+            <xs:enumeration value="20" />
+            <xs:enumeration value="21" />
+            <xs:enumeration value="22" />
+            <xs:enumeration value="23" />
+            <xs:enumeration value="24" />
+            <xs:enumeration value="25" />
+            <xs:enumeration value="26" />
+            <xs:enumeration value="27" />
+            <xs:enumeration value="28" />
+            <xs:enumeration value="29" />
+            <xs:enumeration value="30" />
+            <xs:enumeration value="31" />
+            <xs:enumeration value="32" />
+            <xs:enumeration value="33" />
+            <xs:enumeration value="34" />
+            <xs:enumeration value="35" />
+            <xs:enumeration value="50" />
+            <xs:enumeration value="51" />
+            <xs:enumeration value="52" />
+            <xs:enumeration value="53" />
+            <xs:enumeration value="54" />
+            <xs:enumeration value="55" />
+            <xs:enumeration value="56" />
+            <xs:enumeration value="57" />
+            <xs:enumeration value="58" />
+            <xs:enumeration value="59" />
+            <xs:enumeration value="60" />
+            <xs:enumeration value="61" />
+            <xs:enumeration value="62" />
+            <xs:enumeration value="63" />
+            <xs:enumeration value="64" />
+            <xs:enumeration value="65" />
+            <xs:enumeration value="66" />
+            <xs:enumeration value="67" />
+            <xs:enumeration value="68" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="diangosisCodeST">
+        <xs:annotation>
+            <xs:documentation>The diagnosis code of the case according to the standard ICD10 AM</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="diagnosisTypeST">
+        <xs:annotation>
+            <xs:documentation>diagnosis qualifies the diagnosis and the stage at which it was identified.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PRINCIPAL" />
+            <xs:enumeration value="SCONDARY" />
+            <xs:enumeration value="ADMITTING" />
+            <xs:enumeration value="DISCHARGE" />
+            <xs:enumeration value="CAUSEOFDEATH" />
+            <xs:enumeration value="PROVISIONAL" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="endorsementTypeST">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NEW" />
+            <xs:enumeration value="RENEWAL" />
+            <xs:enumeration value="EXTENSION" />
+            <xs:enumeration value="MODIFICATION" />
+            <xs:enumeration value="UPDATE" />
+            <xs:enumeration value="CANCELLATION" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="focusST">
+        <xs:annotation>
+            <xs:documentation>the focus of vision for near or distance vision</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NEAR" />
+            <xs:enumeration value="DISTANCE" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="genderST">
+        <xs:annotation>
+            <xs:documentation>gender or sex of the patient</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="M" />
+            <xs:enumeration value="F" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="geometryST">
+        <xs:annotation>
+            <xs:documentation>the geometrical representation of the vision prescription</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SPHERE" />
+            <xs:enumeration value="CYLINDER" />
+            <xs:enumeration value="AXIS" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="illnessCodeST">
+        <xs:annotation>
+            <xs:documentation>the type of illness or case to define the loss caterogy of the visit</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AMBULANCE" />
+            <xs:enumeration value="DIALYSIS" />
+            <xs:enumeration value="CHECKUP" />
+            <xs:enumeration value="CHRONIC" />
+            <xs:enumeration value="CIRCUMCISION" />
+            <xs:enumeration value="CLEANING" />
+            <xs:enumeration value="CONGENITAL" />
+            <xs:enumeration value="INFERTILITY" />
+            <xs:enumeration value="MATERNITY COMPLICATIONS" />
+            <xs:enumeration value="PREEXISTING" />
+            <xs:enumeration value="NA" />
+            <xs:enumeration value="ORTHODONTICS" />
+            <xs:enumeration value="PREGNANCY" />
+            <xs:enumeration value="PSYCHIATRY" />
+            <xs:enumeration value="RTA" />
+            <xs:enumeration value="SPORTS" />
+            <xs:enumeration value="VACCINATION" />
+            <xs:enumeration value="WRA" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="maritalStatusST">
+        <xs:annotation>
+            <xs:documentation>
+                marital status of the patient
+                
+                single = never married
+                married =  married at the date of visit
+                unmarried= widowed or separated
+                
+                Note: up to payer to request such info
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SINGLE" />
+            <xs:enumeration value="MARRIED" />
+            <xs:enumeration value="UNMARRIED" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="memberClassST">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="memberIDST">
+        <xs:annotation>
+            <xs:documentation>
+                The memeber ID or card number
+                
+                Note:number format must be defined by insurance
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="memberTypeST">
+        <xs:annotation>
+            <xs:documentation>defines if member is pricipal or dependent</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PRINCIPAL" />
+            <xs:enumeration value="WIFE" />
+            <xs:enumeration value="DEPENDENT" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="nationalityST">
+        <xs:annotation>
+            <xs:documentation>
+COUNTRY NAME                                   CODE
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+NOT APPLICABLE                                  N/A
+AFGHANISTAN                                     AF 
+ALAND ISLANDS					                AX	
+ALBANIA                                         AL    
+ALGERIA                                         DZ     
+AMERICAN SAMOA                                  AS      
+ANDORRA                                         AD     
+ANGOLA                                          AO    
+ANGUILLA                                        AI     
+ANTARCTICA                                      AQ     
+ANTIGUA AND BARBUDA                             AG    
+ARGENTINA                                       AR      
+ARMENIA                                         AM       
+ARUBA                                           AW      
+AUSTRALIA                                       AU    
+AUSTRIA                                         AT    
+AZERBAIJAN                                      AZ      
+BAHAMAS                                         BS     
+BAHRAIN                                         BH      
+BANGLADESH                                      BD     
+BARBADOS                                        BB     
+BELARUS                                         BY     
+BELGIUM                                         BE     
+BELIZE                                          BZ    
+BENIN                                           BJ      
+BERMUDA                                         BM      
+BHUTAN                                          BT    
+BOLIVIA, PLURINATIONAL STATE OF                 BO   
+BONAIRE, SINT EUSTATIUS AND SABA                BQ     
+BOSNIA AND HERZEGOVINA                          BA      
+BOTSWANA                                        BW      
+BOUVET ISLAND                                   BV      
+BRAZIL                                          BR      
+BRITISH INDIAN OCEAN TERRITORY                  IO      
+BRUNEI DARUSSALAM                               BN      
+BULGARIA                                        BG       
+BURKINA FASO                                    BF       
+BURUNDI                                         BI       
+CAMBODIA                                        KH      
+CAMEROON                                        CM         
+CANADA                                          CA      
+CAPE VERDE                                      CV      
+CAYMAN ISLANDS                                  KY     
+CENTRAL AFRICAN REPUBLIC                        CF     
+CHAD                                            TD     
+CHILE                                           CL      
+CHINA                                           CN      
+CHRISTMAS ISLAND                                CX     
+COCOS (KEELING) ISLANDS                         CC      
+COLOMBIA                                        CO      
+COMOROS                                         KM      
+CONGO                                           CG    
+CONGO, THE DEMOCRATIC REPUBLIC OF THE           CD     
+COOK ISLANDS                                    CK      
+COSTA RICA                                      CR      
+COTE D'IVOIRE                                   CI      
+CROATIA 				                        HR     
+CUBA                                            CU     
+CURACAO                                         CW     
+CYPRUS                                          CY      
+CZECH REPUBLIC                                  CZ      
+DENMARK                                         DK    
+DJIBOUTI                                        DJ     
+DOMINICA                                        DM      
+DOMINICAN REPUBLIC                              DO    
+ECUADOR                                         EC      
+EGYPT                                           EG      
+EL SALVADOR                                     SV      
+EQUATORIAL GUINEA                               GQ       
+ERITREA                                         ER      
+ESTONIA                                         EE     
+ETHIOPIA                                        ET     
+FALKLAND ISLANDS (MALVINAS)                     FK      
+FAROE ISLANDS                                   FO      
+FIJI                                            FJ     
+FINLAND                                         FI     
+FRANCE                                          FR      
+FRENCH GUIANA                                   GF    
+FRENCH POLYNESIA                                PF      
+FRENCH SOUTHERN TERRITORIES                     TF      
+GABON                                           GA     
+GAMBIA                                          GM      
+GEORGIA                                         GE      
+GERMANY                                         DE      
+GHANA                                           GH      
+GIBRALTAR                                       GI     
+GREECE                                          GR      
+GREENLAND                                       GL      
+GRENADA                                         GD      
+GUADELOUPE                                      GP     
+GUAM                                            GU      
+GUATEMALA                                       GT     
+GUERNSEY					                    GG	
+GUINEA                                          GN     
+GUINEA-BISSAU                                   GW      
+GUYANA                                          GY      
+HAITI                                           HT     
+HEARD ISLAND AND MCDONALD ISLANDS       	    HM      
+HOLY SEE (VATICAN CITY STATE) 			        VA     
+HONDURAS                                        HN      
+HONG KONG                                       HK      
+HUNGARY                                         HU      
+ICELAND                                         IS     
+INDIA                                           IN     
+INDONESIA                                       ID     
+IRAN (ISLAMIC REPUBLIC OF)                      IR   
+IRAQ                                            IQ    
+IRELAND                                         IE     
+ISLE OF MAN					                    IM	
+ISRAEL                                          IL  
+ITALY                                           IT     
+JAMAICA                                         JM     
+JAPAN                                           JP     
+JERSEY						                    JE	
+JORDAN                                          JO      
+KAZAKHSTAN                                      KZ     
+KENYA                                           KE     
+KIRIBATI                                        KI      
+KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF          KP     
+KOREA, REPUBLIC OF                              KR      
+KUWAIT                                          KW      
+KYRGYZSTAN                                      KG     
+LAO PEOPLE'S DEMOCRATIC REPUBLIC                LA     
+LATVIA                                          LV     
+LEBANON                                         LB      
+LESOTHO                                         LS     
+LIBERIA                                         LR      
+LIBYA                                           LY  
+LIECHTENSTEIN                                   LI     
+LITHUANIA                                       LT    
+LUXEMBOURG                                      LU    
+MACAO                                           MO     
+MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF      MK     
+MADAGASCAR                                      MG      
+MALAWI                                          MW     
+MALAYSIA                                        MY     
+MALDIVES                                        MV      
+MALI                                            ML     
+MALTA                                           MT      
+MARSHALL ISLANDS                                MH      
+MARTINIQUE                                      MQ      
+MAURITANIA                                      MR    
+MAURITIUS                                       MU      
+MAYOTTE                                         YT      
+MEXICO                                          MX      
+MICRONESIA, FEDERATED STATES OF                 FM     
+MOLDOVA, REPUBLIC OF                            MD     
+MONACO                                          MC      
+MONGOLIA					                    MN
+MONTENEGRO					                    ME
+MONTSERRAT                                      MS   
+MOROCCO                                         MA     
+MOZAMBIQUE                                      MZ      
+MYANMAR                                         MM      
+NAMIBIA                                         NA      
+NAURU                                           NR      
+NEPAL                                           NP      
+NETHERLANDS                                     NL     
+NEW CALEDONIA                                   NC     
+NEW ZEALAND                                     NZ     
+NICARAGUA                                       NI     
+NIGER                                           NE      
+NIGERIA                                         NG      
+NIUE                                            NU      
+NORFOLK ISLAND                                  NF    
+NORTHERN MARIANA ISLANDS                        MP      
+NORWAY                                          NO     
+OMAN                                            OM      
+PAKISTAN                                        PK     
+PALAU                                           PW      
+PALESTINIAN TERRITORY, OCCUPIED			        PS		
+PANAMA                                          PA            
+PAPUA NEW GUINEA                                PG      
+PARAGUAY                                        PY      
+PERU                                            PE      
+PHILIPPINES                                     PH      
+PITCAIRN                                        PN      
+POLAND                                          PL     
+PORTUGAL                                        PT    
+PUERTO RICO                                     PR      
+QATAR                                           QA      
+REUNION                                         RE      
+ROMANIA                                         RO     
+RUSSIAN FEDERATION                              RU     
+RWANDA                                          RW      
+SAINT BARTHELEMY				                BL	
+SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA	SH	
+SAINT KITTS AND NEVIS                           KN     
+SAINT LUCIA                                     LC      
+SAINT MARTIN (FRENCH PART)			            MT	
+SAINT PIERRE AND MIQUELON			            PM	
+SAINT VINCENT AND THE GRENADINES                VC      
+SAMOA                                           WS     
+SAN MARINO                                      SM       
+SAO TOME AND PRINCIPE                           ST      
+SAUDI ARABIA                                    SA      
+SENEGAL                                         SN      
+SERBIA						                    RS	
+SEYCHELLES                                      SC       
+SIERRA LEONE                                    SL      
+SINGAPORE                                       SG      
+SINT MAARTEN (DUTCH PART)                       SX      	
+SLOVAKIA 			                            SK      
+SLOVENIA                                        SI      
+SOLOMON ISLANDS                                 SB      
+SOMALIA                                         SO      
+SOUTH AFRICA                                    ZA      
+SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS    GS      
+SOUTH SUDAN					                    SS      
+SPAIN                                           ES      
+SRI LANKA                                       LK      
+SUDAN						                    SD      
+SURINAME					                    SR      
+SVALBARD AND JAN MAYEN				            SJ      
+SWAZILAND                                       SZ      
+SWEDEN                                          SE      
+SWITZERLAND                                     CH           
+SYRIAN ARAB REPUBLIC                            SY      
+TAIWAN, PROVINCE OF CHINA                       TW     
+TAJIKISTAN                                      TJ     
+TANZANIA, UNITED REPUBLIC OF                    TZ      
+THAILAND                                        TH      
+TIMOR-LESTE					                    TL 	
+TOGO                                            TG     
+TOKELAU                                         TK      
+TONGA                                           TO      
+TRINIDAD AND TOBAGO                             TT     
+TUNISIA                                         TN    
+TURKEY                                          TR    
+TURKMENISTAN                                    TM      
+TURKS AND CAICOS ISLANDS                        TC      
+TUVALU                                          TV      
+UGANDA                                          UG     
+UKRAINE                                         UA     
+UNITED ARAB EMIRATES                            AE      
+UNITED KINGDOM                                  GB      
+UNITED STATES                                   US     
+UNITED STATES MINOR OUTLYING ISLANDS            UM      
+URUGUAY                                         UY     
+UZBEKISTAN                                      UZ     
+VANUATU                                         VU      
+VATICAN CITY STATE (HOLY SEE)                   VA      
+VENEZUELA, BOLIVARIAN REPUBLIC OF               VE     
+VIET NAM                                        VN     
+VIRGIN ISLANDS (BRITISH)                        VG      
+VIRGIN ISLANDS (U.S.)                           VI    
+WALLIS AND FUTUNA 	                            WF    
+WESTERN SAHARA                                  EH     
+YEMEN                                           YE      
+YUGOSLAVIA                                      YU     
+ZAMBIA                                          ZM      
+ZIMBABWE                                        ZW      
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="N/A" />   
+            <xs:enumeration value="AF" />
+            <xs:enumeration value="AX" />
+            <xs:enumeration value="AL" />
+            <xs:enumeration value="DZ" />
+            <xs:enumeration value="AS" />
+            <xs:enumeration value="AD" />
+            <xs:enumeration value="AO" />
+            <xs:enumeration value="AI" />
+            <xs:enumeration value="AQ" />
+            <xs:enumeration value="AG" />
+            <xs:enumeration value="AR" />
+            <xs:enumeration value="AM" />
+            <xs:enumeration value="AW" />
+            <xs:enumeration value="AU" />
+            <xs:enumeration value="AT" />
+            <xs:enumeration value="AZ" />
+            <xs:enumeration value="BS" />
+            <xs:enumeration value="BH" />
+            <xs:enumeration value="BD" />
+            <xs:enumeration value="BB" />
+            <xs:enumeration value="BY" />
+            <xs:enumeration value="BE" />
+            <xs:enumeration value="BZ" />
+            <xs:enumeration value="BJ" />
+            <xs:enumeration value="BM" />
+            <xs:enumeration value="BT" />
+            <xs:enumeration value="BO" />
+            <xs:enumeration value="BQ" />
+            <xs:enumeration value="BA" />
+            <xs:enumeration value="BW" />
+            <xs:enumeration value="BV" />
+            <xs:enumeration value="BR" />
+            <xs:enumeration value="BR" />
+            <xs:enumeration value="IO" />
+            <xs:enumeration value="BN" />
+            <xs:enumeration value="BG" />
+            <xs:enumeration value="BF" />
+            <xs:enumeration value="BI" />
+            <xs:enumeration value="KH" />
+            <xs:enumeration value="CM" />
+            <xs:enumeration value="CA" />
+            <xs:enumeration value="CV" />
+            <xs:enumeration value="KY" />
+            <xs:enumeration value="CF" />
+            <xs:enumeration value="TD" />
+            <xs:enumeration value="CL" />
+            <xs:enumeration value="CN" />
+            <xs:enumeration value="CX" />
+            <xs:enumeration value="CC" />
+            <xs:enumeration value="CO" />
+            <xs:enumeration value="KM" />
+            <xs:enumeration value="CG" />
+            <xs:enumeration value="CD" />
+            <xs:enumeration value="CK" />
+            <xs:enumeration value="CR" />
+            <xs:enumeration value="CI" />
+            <xs:enumeration value="HR" />
+            <xs:enumeration value="CU" />
+            <xs:enumeration value="CW" />
+            <xs:enumeration value="CY" />
+            <xs:enumeration value="CZ" />
+            <xs:enumeration value="DK" />
+            <xs:enumeration value="DJ" />
+            <xs:enumeration value="DM" />
+            <xs:enumeration value="DO" />
+            <xs:enumeration value="EC" />
+            <xs:enumeration value="EG" />
+            <xs:enumeration value="SV" />
+            <xs:enumeration value="EK" />
+            <xs:enumeration value="ER" />
+            <xs:enumeration value="EE" />
+            <xs:enumeration value="ET" />
+            <xs:enumeration value="FK" />
+            <xs:enumeration value="FO" />
+            <xs:enumeration value="FJ" />
+            <xs:enumeration value="FI" />
+            <xs:enumeration value="FR" />
+            <xs:enumeration value="GF" />
+            <xs:enumeration value="PF" />
+            <xs:enumeration value="TF" />
+            <xs:enumeration value="GA" />
+            <xs:enumeration value="GM" />
+            <xs:enumeration value="GE" />
+            <xs:enumeration value="DE" />
+            <xs:enumeration value="GH" />
+            <xs:enumeration value="GI" />
+            <xs:enumeration value="GR" />
+            <xs:enumeration value="GL" />
+            <xs:enumeration value="GD" />
+            <xs:enumeration value="GP" />
+            <xs:enumeration value="GU" />
+            <xs:enumeration value="GT" />
+            <xs:enumeration value="GG" />
+            <xs:enumeration value="GN" />
+            <xs:enumeration value="GW" />
+            <xs:enumeration value="GY" />
+            <xs:enumeration value="HT" />
+            <xs:enumeration value="HM" />
+            <xs:enumeration value="VA" />
+            <xs:enumeration value="HN" />
+            <xs:enumeration value="HK" />
+            <xs:enumeration value="HU" />
+            <xs:enumeration value="IS" />
+            <xs:enumeration value="IN" />
+            <xs:enumeration value="ID" />
+            <xs:enumeration value="IR" />
+            <xs:enumeration value="IQ" />
+            <xs:enumeration value="IE" />
+            <xs:enumeration value="IM" />
+            <xs:enumeration value="IL" />
+            <xs:enumeration value="IT" />
+            <xs:enumeration value="JM" />
+            <xs:enumeration value="JP" />
+            <xs:enumeration value="JE" />
+            <xs:enumeration value="JP" />
+            <xs:enumeration value="KZ" />
+            <xs:enumeration value="KE" />
+            <xs:enumeration value="KI" />
+            <xs:enumeration value="KP" />
+            <xs:enumeration value="KR" />
+            <xs:enumeration value="KW" />
+            <xs:enumeration value="KG" />
+            <xs:enumeration value="LA" />
+            <xs:enumeration value="LV" />
+            <xs:enumeration value="LB" />
+            <xs:enumeration value="LS" />
+            <xs:enumeration value="LR" />
+            <xs:enumeration value="LY" />
+            <xs:enumeration value="LI" />
+            <xs:enumeration value="LT" />
+            <xs:enumeration value="LU" />
+            <xs:enumeration value="MO" />
+            <xs:enumeration value="MK" />
+            <xs:enumeration value="MG" />
+            <xs:enumeration value="MW" />
+            <xs:enumeration value="MY" />
+            <xs:enumeration value="MV" />
+            <xs:enumeration value="ML" />
+            <xs:enumeration value="MT" />
+            <xs:enumeration value="MH" />
+            <xs:enumeration value="MQ" />
+            <xs:enumeration value="MR" />
+            <xs:enumeration value="MU" />
+            <xs:enumeration value="YT" />
+            <xs:enumeration value="MX" />
+            <xs:enumeration value="FM" />
+            <xs:enumeration value="MD" />
+            <xs:enumeration value="MC" />
+            <xs:enumeration value="MN" />
+            <xs:enumeration value="ME" />
+            <xs:enumeration value="MS" />
+            <xs:enumeration value="MA" />
+            <xs:enumeration value="MZ" />
+            <xs:enumeration value="MM" />
+            <xs:enumeration value="NA" />
+            <xs:enumeration value="NR" />
+            <xs:enumeration value="NP" />
+            <xs:enumeration value="NL" />
+            <xs:enumeration value="NC" />
+            <xs:enumeration value="NZ" />
+            <xs:enumeration value="NI" />
+            <xs:enumeration value="NE" />
+            <xs:enumeration value="NG" />
+            <xs:enumeration value="NU" />
+            <xs:enumeration value="NF" />
+            <xs:enumeration value="MP" />
+            <xs:enumeration value="NO" />
+            <xs:enumeration value="OM" />
+            <xs:enumeration value="PK" />
+            <xs:enumeration value="PW" />
+            <xs:enumeration value="PS" />
+            <xs:enumeration value="PA" />
+            <xs:enumeration value="PG" />
+            <xs:enumeration value="PY" />
+            <xs:enumeration value="PE" />
+            <xs:enumeration value="PH" />
+            <xs:enumeration value="PN" />
+            <xs:enumeration value="PL" />
+            <xs:enumeration value="PT" />
+            <xs:enumeration value="PR" />
+            <xs:enumeration value="QA" />
+            <xs:enumeration value="RE" />
+            <xs:enumeration value="RO" />
+            <xs:enumeration value="RU" />
+            <xs:enumeration value="RW" />
+            <xs:enumeration value="BL" />
+            <xs:enumeration value="SH" />
+            <xs:enumeration value="KN" />
+            <xs:enumeration value="LC" />
+            <xs:enumeration value="MT" />
+            <xs:enumeration value="PM" />
+            <xs:enumeration value="VC" />
+            <xs:enumeration value="WS" />
+            <xs:enumeration value="SM" />
+            <xs:enumeration value="ST" />
+            <xs:enumeration value="SA" />
+            <xs:enumeration value="SN" />
+            <xs:enumeration value="RS" />
+            <xs:enumeration value="SC" />
+            <xs:enumeration value="SL" />
+            <xs:enumeration value="SG" />
+            <xs:enumeration value="SX" />
+            <xs:enumeration value="SK" />
+            <xs:enumeration value="SI" />
+            <xs:enumeration value="SB" />
+            <xs:enumeration value="SO" />
+            <xs:enumeration value="ZA" />
+            <xs:enumeration value="GS" />
+            <xs:enumeration value="SS" />
+            <xs:enumeration value="ES" />
+            <xs:enumeration value="LK" />
+            <xs:enumeration value="SD" />
+            <xs:enumeration value="SR" />
+            <xs:enumeration value="SJ" />
+            <xs:enumeration value="SZ" />
+            <xs:enumeration value="SE" />
+            <xs:enumeration value="CH" />
+            <xs:enumeration value="SY" />
+            <xs:enumeration value="TW" />
+            <xs:enumeration value="TJ" />
+            <xs:enumeration value="TZ" />
+            <xs:enumeration value="TH" />
+            <xs:enumeration value="TL" />
+            <xs:enumeration value="TG" />
+            <xs:enumeration value="TK" />
+            <xs:enumeration value="TO" />
+            <xs:enumeration value="TT" />
+            <xs:enumeration value="TN" />
+            <xs:enumeration value="TR" />
+            <xs:enumeration value="TM" />
+            <xs:enumeration value="TC" />
+            <xs:enumeration value="TV" />
+            <xs:enumeration value="UG" />
+            <xs:enumeration value="UA" />
+            <xs:enumeration value="AE" />
+            <xs:enumeration value="GB" />
+            <xs:enumeration value="US" />
+            <xs:enumeration value="UM" />
+            <xs:enumeration value="UY" />
+            <xs:enumeration value="UZ" />
+            <xs:enumeration value="VU" />
+            <xs:enumeration value="VA" />
+            <xs:enumeration value="VE" />
+            <xs:enumeration value="VN" />
+            <xs:enumeration value="VG" />
+            <xs:enumeration value="VI" />
+            <xs:enumeration value="WF" />
+            <xs:enumeration value="EH" />
+            <xs:enumeration value="YE" />
+            <xs:enumeration value="YU" />
+            <xs:enumeration value="ZM" />
+            <xs:enumeration value="ZU" />
+                     
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="opticalReadingST">
+        <xs:simpleContent>
+            <xs:extension base="xs:decimal">
+                <xs:attribute name="geometry" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="geometryST" />
+                    </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="side" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="sideST" />
+                    </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="focus" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="focusST">
+                            <xs:enumeration value="NEAR" />
+                            <xs:enumeration value="DISTANCE" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="policyNumberST">
+        <xs:annotation>
+            <xs:documentation>
+                the policy Number issued by the insurance company
+                
+                number format must be defined by insurance
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="policyTypeST">
+        <xs:annotation>
+            <xs:documentation>The type of policy for individual, corporate, plan</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CORPORATE" />
+            <xs:enumeration value="INDIVIDUAL" />
+            <xs:enumeration value="PLAN" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="physicianCategoryST">
+        <xs:annotation>
+            <xs:documentation>The catedory of the Physician GP, Specialist, Consultant</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GENERAL PRACTICE" />
+            <xs:enumeration value="SPECIALIST" />
+            <xs:enumeration value="CONSULTANT" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="providerCodeST">
+        <xs:annotation>
+            <xs:documentation>This code is identified by the insurance company for each provider.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="pulseST">
+        <xs:annotation>
+            <xs:documentation>the heart pulse rate of the patient at the time of visit eg. "75"</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="300" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="respRateST">
+        <xs:annotation>
+            <xs:documentation>
+                the repiratory rate of the patient at the time of visit eg. "12"
+                
+                Note: it is up the insurance to require such information
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="200" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="roomTypeST">
+        <xs:annotation>
+            <xs:documentation>the type of room to admit the patient in</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SHARED ROOM" />
+            <xs:enumeration value="PRIVATE" />
+            <xs:enumeration value="SUITE" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="serviceTypeST">
+        <xs:annotation>
+            <xs:documentation>The type of the service requested.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="N/A" />
+            <xs:enumeration value="LABORATORY" />
+            <xs:enumeration value="MEDICATION" />
+            <xs:enumeration value="RADIOLOGY" />
+            <xs:enumeration value="CONSULTATION" />
+            <xs:enumeration value="PROCEDURE" />
+            <xs:enumeration value="HOSPITLIZATION" />
+            <xs:enumeration value="DENTAL" />
+            <xs:enumeration value="SUPPLY" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="sideST">
+        <xs:annotation>
+            <xs:documentation>left eye or right eye</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OS" />
+            <xs:enumeration value="OD" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="statusCodeST">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="VALID" />
+            <xs:enumeration value="INVALID" />
+            <xs:enumeration value="ELIGIBLE" />
+            <xs:enumeration value="INELIGIBLE" />
+            <xs:enumeration value="APPROVED" />
+            <xs:enumeration value="REJECTED" />
+            <xs:enumeration value="PARTIALLY APPROVED" />
+            <xs:enumeration value="LIMIT APPROVED" />
+            <xs:enumeration value="CONDITIONALLY APPROVED" />
+            <xs:enumeration value="PENDING" />
+            <xs:enumeration value="CANCELLED" />
+            <xs:enumeration value="REFERRED" />
+            <xs:enumeration value="FURTHER DETAILS REQUIRED" />
+            <xs:enumeration value="UNDER PROCESS" />
+            <xs:enumeration value="SETTLED" />
+            <xs:enumeration value="PAID" />
+            <xs:enumeration value="PARTIALLY PAID" />
+            <xs:enumeration value="OUTSTANDING" />
+            <xs:enumeration value="RETURNED" />
+            <xs:enumeration value="DUPLICATE" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="temperatureST">
+        <xs:annotation>
+            <xs:documentation>patient temperature at the time of triag eg:"36.9"</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="32" />
+            <xs:maxInclusive value="42" />
+            <xs:totalDigits value="3" />
+            <xs:fractionDigits value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="toothNumberST">
+        <xs:annotation>
+            <xs:documentation>The tooth number should be identified for each dental procedure service rendered. Both numberical and alphabetical options are possible.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0" />
+            <xs:enumeration value="1" />
+            <xs:enumeration value="2" />
+            <xs:enumeration value="3" />
+            <xs:enumeration value="4" />
+            <xs:enumeration value="5" />
+            <xs:enumeration value="6" />
+            <xs:enumeration value="7" />
+            <xs:enumeration value="8" />
+            <xs:enumeration value="9" />
+            <xs:enumeration value="10" />
+            <xs:enumeration value="11" />
+            <xs:enumeration value="12" />
+            <xs:enumeration value="13" />
+            <xs:enumeration value="14" />
+            <xs:enumeration value="15" />
+            <xs:enumeration value="16" />
+            <xs:enumeration value="17" />
+            <xs:enumeration value="18" />
+            <xs:enumeration value="19" />
+            <xs:enumeration value="20" />
+            <xs:enumeration value="21" />
+            <xs:enumeration value="22" />
+            <xs:enumeration value="23" />
+            <xs:enumeration value="24" />
+            <xs:enumeration value="25" />
+            <xs:enumeration value="26" />
+            <xs:enumeration value="27" />
+            <xs:enumeration value="28" />
+            <xs:enumeration value="29" />
+            <xs:enumeration value="30" />
+            <xs:enumeration value="31" />
+            <xs:enumeration value="32" />
+            <xs:enumeration value="A" />
+            <xs:enumeration value="B" />
+            <xs:enumeration value="C" />
+            <xs:enumeration value="D" />
+            <xs:enumeration value="E" />
+            <xs:enumeration value="F" />
+            <xs:enumeration value="G" />
+            <xs:enumeration value="H" />
+            <xs:enumeration value="I" />
+            <xs:enumeration value="J" />
+            <xs:enumeration value="K" />
+            <xs:enumeration value="L" />
+            <xs:enumeration value="M" />
+            <xs:enumeration value="N" />
+            <xs:enumeration value="O" />
+            <xs:enumeration value="P" />
+            <xs:enumeration value="Q" />
+            <xs:enumeration value="R" />
+            <xs:enumeration value="S" />
+            <xs:enumeration value="T" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="transactionDirectionST">
+        <xs:annotation>
+            <xs:documentation>The direction of the transaction identifies whether the message passed is the request or the response.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="REQUEST" />
+            <xs:enumeration value="RESPONSE" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="transactionSubTypeST">
+        <xs:annotation>
+            <xs:documentation>transaction sub type further defines the purpose of the transaction.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NEW" />
+            <xs:enumeration value="FOLLOWUP" />
+            <xs:enumeration value="CANCELLATION" />
+            <xs:enumeration value="SUMMARY" />
+            <xs:enumeration value="DETAIL" />
+            <xs:enumeration value="NONE" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="transactionTypeST">
+        <xs:annotation>
+            <xs:documentation>
+                1.1 = Eligibility Submission
+                2.1 = Approval Submission
+                2.2 = Approval Inquiry
+                2.3 = Approval Notification
+                3.1 = ClaimSubmission
+                3.2 = ClaimInquiry
+                3.3 = ClaimNotification
+                3.4 = MSOB
+                3.5 = MEOB
+                4.2 =  Policy Inquiry
+                4.3 = Policy Notification
+                5.1 = Attachment Submission
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1.1" />
+            <xs:enumeration value="2.1" />
+            <xs:enumeration value="2.2" />
+            <xs:enumeration value="2.3" />
+            <xs:enumeration value="3.1" />
+            <xs:enumeration value="3.2" />
+            <xs:enumeration value="3.3" />
+            <xs:enumeration value="3.4" />
+            <xs:enumeration value="3.5" />
+            <xs:enumeration value="4.2" />
+            <xs:enumeration value="4.3" />
+            <xs:enumeration value="5.1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="visitTypeST">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NEW" />
+            <xs:enumeration value="FOLLOWUP" />
+            <xs:enumeration value="REFERRAL" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="weightST">
+        <xs:annotation>
+            <xs:documentation>the weight of the patient in kilograms</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="300" />
+            <xs:totalDigits value="5" />
+            <xs:fractionDigits value="2" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ANPLUS">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(a-zA-Z0-9-_ .,/)*" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AN">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(a-zA-Z0-9)*" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="APLUS">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([a-zA-Z]|'| )*" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="page">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:simpleType name="fileTypeST">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Medical Report" />
+      <xs:enumeration value="X-Ray result" />
+      <xs:enumeration value="Lab Result" />
+      <xs:enumeration value="Iqama/ID copy" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

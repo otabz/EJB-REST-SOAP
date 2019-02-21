@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="WSchema-ST.xsd" />
+    <xs:include schemaLocation="WSchema-CT2.xsd" />
+    <xs:complexType name="ApprovalSubmissionRequestCT">
+        <xs:sequence>
+            <xs:element name="approvalNumber" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF transactionSubType = (FOLLOWUP OR CANCELLATION)
+                        Not Required otherwise
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Member" type="MemberCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="VisitInformation" type="visitInfoCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="CaseInformation" type="CaseInfoCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="estimatedCost" type="amountST" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The estimated cost is the aggregated sum of net amount of all services.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Service" type="ServiceCT" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Not required IF transactionSubType = CANCELLATION 
+                        OR (transactionSubtype = NEW AND caseType = INPATIENT) 
+                        OR (transactionSubtype = FOLLOW UP AND caseType = INPATIENT) 
+                        
+                        Required Otherwise
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Comment" type="CommentCT" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Admission" type="AdmissionCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF {case type = inptient, Delivery }
+                        Not Required IF {case type = all the other}
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalSubmissionResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="ApprovalSubmissionRequestCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ApprovalResponse" type="ApprovalResponseCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalInquiryRequestCT">
+        <xs:choice>
+            <xs:element name="Criteria" type="ApprovalCriteriaCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ApprovalReference" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="approvalNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+                        <xs:element name="approvalVersion" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ApprovalDetailResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ApprovalReference" minOccurs="1" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="approvalNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                    <xs:element name="approvalVersion" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ApprovalResponse" type="ApprovalResponseCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalInquiryResponseCT">
+        <xs:choice>
+            <xs:element name="SummaryResponse" type="ApprovalSummaryResponseCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="DetailResponse" type="ApprovalDetailResponseCT" minOccurs="1" maxOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ApprovalSummaryResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="ApprovalCriteriaCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Status" type="StatusCT" />
+            <xs:element name="ApprovalList" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ApprovalLine" type="ApprovalLineCT" minOccurs="0" maxOccurs="unbounded" />
+                    </xs:sequence>
+                    <xs:attribute name="count" type="xs:integer" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="additionalInfo" type="additionalInfoST" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalResponseCT">
+        <xs:sequence>
+            <xs:element name="MemberInfo" type="MemberInfoCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF statusCode = APPROVED REJECTED, PARTIAL APPROVAL, LIMIT APPROVAL, PENDING
+                        
+                        Not Required IF statusCode= INVALID
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CoverageInfo" type="CoverageInfoCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>coverag information allows the payer to spedify the benefit coverage for an approval, as well as the patient share for the entire approval. depending on the payer preference, patient share on this level might be provided by the payer instead of the service level.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VisitInformation" type="visitInfoCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF statusCode = APPROVED REJECTED, PARTIAL APPROVAL, LIMIT APPROVAL, PENDING
+                        
+                        Not Required IF statusCode= INVALID
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CaseInformation" type="CaseInfoCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF statusCode = APPROVED REJECTED, PARTIAL APPROVAL, LIMIT APPROVAL, PENDING
+                        
+                        Not Required IF statusCode= INVALID
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ValidityEffect" type="ValidityEffectCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF statusCode = APPROVED REJECTED, PARTIAL APPROVAL, LIMIT APPROVAL
+                        
+                        Not Required IF statusCode= INVALID, PENDING
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Editing" type="EditingCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="AdmissionResponse" type="AdmissionResponseCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required if=
+                        the status code is  APPROVED, LIMIT APPROVED, PARTIAL APPROVED, REJECTED
+                        AND
+                        Case type is INPATIENT or DELIVERY
+                        
+                        Not required if = 
+                        the status code is INVALID or PENDING  
+                        Or
+                        if case type is OUTPATIENT, PHARMACY, DENTAL,...
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ServiceResponse" type="ServiceResponseCT" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Requirede IF statusCode =  APPROVED, LIMIT APPROVED, PARTIAL APPROVED, REJECTED
+                        AND caseType != INPATIENT
+                        
+                        Not Required otherwise
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Comment" type="CommentCT" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="estimatedCost" type="amountST" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The estimated cost is the aggregated sum of net amount of all services.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="approvedCost" type="amountST" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        required if=
+                        the status code is  APPROVED, LIMIT APPROVED, PARTIAL APPROVED, REJECTED
+                        
+                        
+                        Not required if = 
+                        the status code is INVALID or PENDING
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="submissionDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+            <xs:element name="additionalInfo" type="additionalInfoST" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalNotificationRequestCT">
+        <xs:sequence>
+            <xs:element name="notificationMessage" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Member" type="MemberCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="approval" type="ApprovalLineCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ApprovalNotificationResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="ApprovalNotificationRequestCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimInquiryRequestCT">
+        <xs:choice>
+            <xs:element name="Criteria" type="ClaimCriteriaCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ClaimReference" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="providerClaimNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+                        <xs:element name="payerClaimNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ClaimDetailResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ClaimReference" minOccurs="1" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:choice>
+                                    <xs:element name="providerClaimNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                    <xs:element name="payerClaimNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+                                </xs:choice>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ClaimResponse" type="ClaimResponseCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimInquiryResponseCT">
+        <xs:choice>
+            <xs:element name="SummaryResponse" type="ClaimSummaryResponseCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="DetailResponse" type="ClaimDetailResponseCT" minOccurs="1" maxOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ClaimResponseCT">
+        <xs:sequence>
+            <xs:element name="ClaimIdentifier" type="ClaimIdentifierCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="MemberInfo" type="MemberInfoCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="submissionDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ClaimGDPN" type="GDPNCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="ClaimDecisionGDPN" type="GDPNCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="ClaimPayment" type="ClaimPaymentCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="InvoiceResponse" type="InvoiceResponseCT" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Comments" type="CommentCT" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="additionalInfo" type="additionalInfoST" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimSubmissionRequestCT">
+        <xs:sequence>
+            <xs:element name="ClaimIdentities" type="ClaimIdentifierCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Member" type="MemberCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="VisitInformation" type="visitInfoCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="CaseInformation" type="CaseInfoCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ClaimGDPN" type="GDPNCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Invoice" type="InvoiceCT" minOccurs="1" maxOccurs="unbounded" />
+            <xs:element name="Comment" type="CommentCT" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Admission" type="AdmissionCT" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Required IF {case type = inptient, Delivery }
+                        Not Required IF {case type = all the other}
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+ 	<xs:element minOccurs="0" maxOccurs="7" name="Attachment" type="AttachmentRequestCT" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimSubmissionResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="ClaimSubmissionRequestCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ClaimResponse" type="ClaimResponseCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimSummaryResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="ClaimCriteriaCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ClaimList" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ClaimLine" type="ClaimLineCT" minOccurs="0" maxOccurs="unbounded" />
+                    </xs:sequence>
+                    <xs:attribute name="count" type="xs:int" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="additionalInfo" type="additionalInfoST" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EligibilitySubmissionRequestCT">
+        <xs:sequence>
+            <xs:element name="Member" type="MemberCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="VisitInformation" type="visitInfoCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EligibilitySubmissionReponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="EligibilitySubmissionRequestCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="MemberInfo" type="MemberInfoCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="CoverageInfo" type="CoverageInfoCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="additionalInfo" type="additionalInfoST" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ErrorResponseCT">
+        <xs:sequence>
+            <xs:element name="ErrorCode" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ErrorDescription" type="xs:string" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyNotificationRequestCT">
+        <xs:sequence>
+            <xs:element name="notificationMessage" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="PolicyLineCT" type="PolicyGenInfoCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="endorsementNumber" type="xs:string" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyNotificationResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="PolicyNotificationRequestCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyInquiryRequestCT">
+        <xs:choice>
+            <xs:element name="Criteria" type="PolicyInquiryCriteriaCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="policyNumber" type="policyNumberST" minOccurs="1" maxOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="PolicyDetailResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="policyNumberST" minOccurs="1" maxOccurs="1" />
+            <xs:element name="PolicyResponse" type="PolicyCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="additionalInfo" type="additionalInfoST" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PolicyInquiryResponseCT">
+        <xs:choice>
+            <xs:element name="SummaryResponse" type="PolicySummaryResponseCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="DetailResponse" type="PolicyDetailResponseCT" minOccurs="1" maxOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="PolicySummaryResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="PolicyInquiryCriteriaCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Status" type="StatusCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="PolicyList" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="PolicyLine" type="PolicyGenInfoCT" minOccurs="0" maxOccurs="unbounded" />
+                    </xs:sequence>
+                    <xs:attribute name="count" type="xs:int" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="additionalInfo" type="additionalInfoST" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MessageHeaderCT">
+        <xs:sequence>
+            <xs:element name="Transaction" type="TransactionCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Interaction" type="InteractionCT" minOccurs="1" maxOccurs="1" />
+            <xs:element name="User" type="UserCT" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Timestamp" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimNotificationRequestCT">
+        <xs:sequence>
+            <xs:element name="notificationMessage" type="xs:string" />
+            <xs:element name="Claim" type="ClaimLineCT" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ClaimNotificationResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData" type="ClaimNotificationRequestCT" />
+            <xs:element name="Status" type="StatusCT" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AttachmentSubmissionRequestCT">
+        <xs:sequence>
+            <xs:element name="Member" type="MemberCT" />
+            <xs:element name="caseType" type="caseTypeST" />
+            <xs:element name="Attachment">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="AttachmentTitle" type="xs:string" />
+                        <xs:element name="AttachmentComment" type="xs:string" />
+                        <xs:element name="attachementFile">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:base64Binary">
+                                        <xs:attribute name="fileName" type="xs:string" />
+                                        <xs:attribute name="fileType" type="fileTypeST" />
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AttachmentSubmissionResponseCT">
+        <xs:sequence>
+            <xs:element name="RequestedData">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Member" type="MemberCT" />
+                        <xs:element name="caseType" type="caseTypeST" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="status" type="StatusCT" />
+            <xs:element name="AttachmentIdentifier" type="AttachmentIdentifierCT" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

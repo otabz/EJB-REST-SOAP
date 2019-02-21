@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:importSchema="http://www.examples.com/types" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.waseel.com/wsdl/primary/wschema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AlNoorMakkah" targetNamespace="http://www.waseel.com/wsdl/primary/wschema">
+	<types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.waseel.com/wsdl/primary/wschema">
+			<include schemaLocation="WaseelSchema.xsd"/>
+		</schema>
+	</types>
+	<message name="schemaIn">
+		<part element="tns:TransactionWrapper" name="requestObject"/>
+	</message>
+	<message name="schemaOut">
+		<part element="tns:TransactionWrapper" name="responseObject"/>
+	</message>
+	<portType name="UhudInterface">
+		<operation name="submitSchema">
+			<input message="tns:schemaIn"/>
+			<output message="tns:schemaOut"/>
+		</operation>
+	</portType>
+	<binding name="UhudInterfaceBinding" type="tns:UhudInterface">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="submitSchema">
+			<soap:operation soapAction=""/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="Uhud">
+		<port binding="tns:UhudInterfaceBinding" name="UhudInterfacePort">
+			<soap:address location="http://devzero.waseel.com/WaseelSwitch/Uhud/Service?wsdl"/>
+		</port>
+	</service>
+</definitions>
